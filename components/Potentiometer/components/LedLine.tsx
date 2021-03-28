@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useRef } from "react";
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "../../Themed";
@@ -8,6 +8,20 @@ const CONTAINER_SIZE = 150;
 // const RADIUS = CONTAINER_SIZE / 2 - LED_WIDTH / 4;
 const RADIUS = CONTAINER_SIZE / 2;
 
+const calculateLedsPosition = (number: number) => {
+  return Array(number)
+    .fill(0)
+    .map((_, idx) => {
+      const deg = idx * 30 + 135;
+      const angle = (deg * Math.PI) / 180;
+
+      const x = RADIUS + Math.cos(angle) * RADIUS;
+      const y = RADIUS + Math.sin(angle) * RADIUS;
+      const rotation = Math.atan((RADIUS - y) / (RADIUS - x)) + Math.PI / 2;
+      return { x, y, rotation };
+    });
+};
+
 export default function LedLine({
   level,
   isActive,
@@ -15,28 +29,20 @@ export default function LedLine({
   level: number;
   isActive: boolean;
 }) {
+  const ledParams = useMemo(() => calculateLedsPosition(10), []);
+
   return (
     <View style={styles.ledIndicatorsBar}>
-      {Array(10)
-        .fill(0)
-        .map((_, idx) => {
-          const deg = idx * 30 + 135;
-          const angle = (deg * Math.PI) / 180;
-
-          const x = RADIUS + Math.cos(angle) * RADIUS;
-          const y = RADIUS + Math.sin(angle) * RADIUS;
-          const rotation = Math.atan((RADIUS - y) / (RADIUS - x)) + Math.PI / 2;
-          return (
-            <Led
-              key={idx}
-              x={x}
-              y={y}
-              isActive={isActive}
-              isOn={level >= idx}
-              rotation={rotation}
-            />
-          );
-        })}
+      {ledParams.map(({ x, y, rotation }, idx) => (
+        <Led
+          key={idx}
+          x={x}
+          y={y}
+          isActive={isActive}
+          isOn={level >= idx}
+          rotation={rotation}
+        />
+      ))}
     </View>
   );
 }

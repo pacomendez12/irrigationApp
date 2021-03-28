@@ -5,17 +5,12 @@ import ValveCard from "../components/ValveCard";
 import Potentiometer from "../components/Potentiometer";
 import { Text, View } from "../components/Themed";
 
-
 export default function TabOneScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <ValveCard
-          deviceName="Válvula 1"
-        />
-        <ValveCard
-          deviceName="Válvula 2"
-        />
+      <ScrollView style={styles.scrollView} bounces={false}>
+        <ValveCard deviceName="Válvula 1" />
+        <ValveCard deviceName="Válvula 2" />
         {/* <ValveCard
           deviceName="Valvula 3"
         />

@@ -7,7 +7,7 @@ import { Text, View } from "./Themed";
 import Potentiometer from "./Potentiometer/index";
 import { getTimeFromSeconds } from "../util/time";
 
-const times = [60, 120, 300, 600, 900, 1800, 3600, 5400, 7200, 9000];
+const seconds = [60, 120, 300, 600, 900, 1800, 3600, 5400, 7200, 9000];
 
 export default function ValveCard({
   deviceName,
@@ -23,7 +23,7 @@ export default function ValveCard({
 
   useEffect(() => {
     if (isOn) {
-      const totalTime = times[level];
+      const totalTime = seconds[level];
       setIrrigationTime(totalTime);
       setRemaining(totalTime);
     } else {
@@ -48,13 +48,11 @@ export default function ValveCard({
         clearInterval(interval);
       };
     } else {
-      onTimeout();
+      setIsOn(false);
     }
   }, [remaining]);
 
-  const onTimeout = useCallback(() => {
-    setIsOn(false);
-  }, []);
+
 
   return (
     <View style={styles.container}>
@@ -120,7 +118,7 @@ export default function ValveCard({
             setIsOn={setIsOn}
           />
           <Text style={styles.timeText}>
-            {getTimeFromSeconds(isOn ? remaining : times[level])}
+            {getTimeFromSeconds(isOn ? remaining : seconds[level])}
           </Text>
           <View opacity={isOn ? 1 : 0}>
             <Progress.Bar

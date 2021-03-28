@@ -31,8 +31,8 @@ export default function Led({
   );
 }
 
-const LED_WIDTH = 4;
-const LED_HEIGHT = 4;
+const LED_WIDTH = 5;
+const LED_HEIGHT = 3;
 
 const styles = StyleSheet.create({
   led: {

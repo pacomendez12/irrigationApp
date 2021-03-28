@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -12,14 +12,14 @@ export default function Switch({
   setIsOn,
 }: {
   isOn: boolean;
-  setIsOn: (value: boolean) => void;
+  setIsOn: (value: any) => void;
 }) {
+  const onPress = useCallback(() => {
+    setIsOn((isOn: boolean) => !isOn);
+  }, []);
+
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        setIsOn(!isOn);
-      }}
-    >
+    <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.button]}>
         <Ionicons
           size={30}
