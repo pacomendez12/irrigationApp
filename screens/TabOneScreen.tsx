@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import ValveCard from "../components/ValveCard";
@@ -6,17 +6,29 @@ import Potentiometer from "../components/Potentiometer";
 import { Text, View } from "../components/Themed";
 
 export default function TabOneScreen() {
+  const [devices, setDevices] = useState(["Válvula 1", "Válvula 2"]);
+
+  const setDeviceName = (deviceId: number, name: string) => {
+    setDevices((devs: string[]) => {
+      const copy = [...devs];
+      copy[deviceId] = name;
+      return copy;
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} bounces={false}>
-        <ValveCard deviceName="Válvula 1" />
-        <ValveCard deviceName="Válvula 2" />
-        {/* <ValveCard
-          deviceName="Valvula 3"
-        />
-        <ValveCard
-          deviceName="Valvula 4"
-        /> */}
+        {devices.map((device: string, idx: number) => {
+          return (
+            <ValveCard
+              key={idx}
+              id={idx}
+              deviceName={device}
+              setDeviceName={setDeviceName}
+            />
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
