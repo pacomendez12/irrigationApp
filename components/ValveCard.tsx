@@ -127,10 +127,10 @@ export default function ValveCard({
             ) : (
               <Text
                 style={{
-                  backgroundColor: "#eee",
+                  backgroundColor: "#ffaaaa",
                   padding: 13,
                   borderRadius: 30,
-                  color: "gray",
+                  color: "#8e2222",
                 }}
               >
                 Apagado
