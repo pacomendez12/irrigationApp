@@ -5,7 +5,7 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Manual: undefined;
-  "Automático": undefined;
+  Automático: undefined;
 };
 
 export type TabOneParamList = {
@@ -15,3 +15,13 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
+
+export interface Task {
+  id: number;
+  time: number;
+  schedule: {
+    type: number;
+    occurrences: number;
+  };
+  enabled: boolean;
+}

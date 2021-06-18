@@ -1,14 +1,90 @@
-import React, { useRef } from "react";
-import { StyleSheet } from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, FlatList } from "react-native";
 import { FAB } from "react-native-paper";
 import ActionSheet, { ActionSheetProps } from "react-native-actions-sheet";
+import { cloneDeep } from "lodash";
 
 import { Text, View } from "../components/Themed";
+import TaskItem from "../components/TaskItem";
+import { Task } from "../types";
+import {
+  NONE,
+  MONDAY,
+  TUESDAY,
+  WENDNESDAY,
+  THURSDAY,
+  FRIDAY,
+  SATURDAY,
+  SUNDAY,
+  ONE_TIME_EVENT,
+  REPEAT_WEEK,
+  REPEAT_BIWEEK,
+  REPEAT_MONTH,
+} from "../constants";
+
+const mockTasks: Task[] = [
+  {
+    id: 1,
+    time: 1480,
+    schedule: {
+      type: REPEAT_WEEK,
+      occurrences: MONDAY | WENDNESDAY | FRIDAY,
+    },
+    enabled: true,
+  },
+  {
+    id: 2,
+    time: 480,
+    schedule: {
+      type: REPEAT_BIWEEK,
+      occurrences: TUESDAY | THURSDAY,
+    },
+    enabled: true,
+  },
+  {
+    id: 3,
+    time: 72020,
+    schedule: {
+      type: ONE_TIME_EVENT,
+      occurrences: NONE,
+    },
+    enabled: true,
+  },
+];
 
 export default function TabTwoScreen() {
+  const [tasks, setTasks] = useState(cloneDeep(mockTasks));
+
+  const toggleEnabled = (task: Task) => {
+    setTasks((tasks) => {
+      return tasks.map((t) => {
+        if (t === task) return { ...t, enabled: !t.enabled };
+        return t;
+      });
+    });
+  };
+
+  const renderItem = ({ item }: { item: Task }) => {
+    return (
+      <TaskItem
+        task={item}
+        toggleEnabled={toggleEnabled}
+        containerStyle={{
+          marginLeft: 25,
+        }}
+      />
+    );
+  };
+
   const actionSheetRef = useRef<ActionSheetProps>();
   return (
     <View style={styles.container}>
+      <FlatList
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={(item: Task, index: number) => `${item?.id}`}
+      />
+
       <FAB
         style={styles.fab}
         icon="plus"
@@ -35,7 +111,7 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "center",
   },
   title: {

@@ -17,3 +17,19 @@ export const getTimeFromSeconds = (seconds: number): string => {
     minutes > 0 ? `y ${minutes} minutos` : ""
   } `;
 };
+
+export const getTimeFromSecondsShort = (seconds: number): string => {
+  if (seconds < 60) {
+    return ``;
+  }
+  let minutes = Math.floor(seconds / 60);
+  seconds = seconds % 60;
+  if (minutes < 60) {
+    return `00:${minutes.toString().padStart(2, "0")}`;
+  }
+  const hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}`;
+};
