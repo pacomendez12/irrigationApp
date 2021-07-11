@@ -1,10 +1,9 @@
 import React from "react";
-import { isEmpty } from "lodash";
 import { StyleProp, ViewStyle, Switch } from "react-native";
 import { Badge } from "react-native-paper";
 
 import { Text, View } from "../Themed";
-import { getTimeFromSecondsShort } from "../../util/time";
+import { getTimeFromSeconds, getTimeFromSecondsShort } from "../../util/time";
 import { Task } from "../../types";
 
 import TypeIndicator from "./TaskTypeIndicator";
@@ -51,10 +50,15 @@ export default function Item({
             alignItems: "center",
           }}
         >
-          {getDaysString(task?.schedule?.occurrences)}
+          {renderDaysBadges(task?.schedule?.occurrences)}
         </View>
       </View>
       <View style={styles.containerRight}>
+        <View style={{ maxWidth: 65 }} >
+          <Text style={{ color: 'gray', fontSize: 12 }}>
+            {getTimeFromSeconds(12000)}
+          </Text>
+        </View>
         <Switch
           value={task?.enabled}
           trackColor={{ false: "#dfdfdf", true: "#2f95dc77" }}
@@ -68,19 +72,11 @@ export default function Item({
   );
 }
 
-function getDaysString(daysFlags: number) {
+function renderDaysBadges(daysFlags: number) {
   const totalDays = countDays(daysFlags);
   if (totalDays === 0) return null;
 
-  const mapper = {
-    0: "L",
-    1: "M",
-    2: "I",
-    3: "J",
-    4: "V",
-    5: "S",
-    6: "D",
-  };
+  const mapper = ["L", "M", "I", "J", "V", "S", "D"];
   const days = Object.keys(mapper).map((dayIdx: number) => {
     return ((daysFlags >> dayIdx) & 0x1) === 1;
   });
@@ -109,5 +105,3 @@ function countDays(daysFlags: number) {
   }
   return counter;
 }
-
-function showDaysShort(daysFlags: number) {}

@@ -20,8 +20,13 @@ export default StyleSheet.create({
   },
   containerRight: {
     flex: 1,
-    flexGrow: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexGrow: 4,
     marginRight: 15,
+    minHeight: 55,
+    paddingHorizontal: 7
   },
   hourText: {
     fontSize: 25,
